@@ -4,6 +4,9 @@ GET http://localhost:8080/api/runs
 ### Find Run By ID
 GET http://localhost:8080/api/runs/2
 
+### Find Run By ID That Doesn't Exist
+GET http://localhost:8080/api/runs/99
+
 
 ### Create new Run
 POST http://localhost:8080/api/runs

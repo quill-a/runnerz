@@ -25,12 +25,12 @@ public class RunController {
     @GetMapping("/{id}")
     Run findById(@PathVariable Integer id) {
 
-
         Optional<Run> run = runRepository.findById(id);
         if(run.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new RunNotFoundException(id);
         }
         return run.get();
+
     }
 
     // post

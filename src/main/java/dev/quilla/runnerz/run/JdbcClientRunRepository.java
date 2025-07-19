@@ -1,7 +1,5 @@
 package dev.quilla.runnerz.run;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -10,9 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class JdbcClientRunRepository {
+public class JdbcClientRunRepository implements RunRepository {
 
-    private static final Logger log = LoggerFactory.getLogger(JdbcClientRunRepository.class);
     private final JdbcClient jdbcClient;
 
     public JdbcClientRunRepository(JdbcClient jdbcClient) {
@@ -20,7 +17,7 @@ public class JdbcClientRunRepository {
     }
 
     public List<Run> findAll() {
-        return jdbcClient.sql("SELECT * FROM RUN;")
+        return jdbcClient.sql("SELECT * FROM RUN")
                 .query(Run.class)
                 .list();
     }
@@ -37,7 +34,7 @@ public class JdbcClientRunRepository {
                 .params(List.of(run.id(), run.title(), run.startedOn(), run.completedOn(), run.miles(), run.location().toString()))
                 .update();
 
-        Assert.state(updated == 1, "Failed to create run " + run.title() + ".");
+        Assert.state(updated == 1, "Failed to create run " + run.title());
     }
 
     public void update(Run run, Integer id) {
@@ -45,7 +42,7 @@ public class JdbcClientRunRepository {
                 .params(List.of(run.title(), run.startedOn(), run.completedOn(), run.location().toString(), id))
                 .update();
 
-        Assert.state(updated == 1, "Failed to update run " + run.title() + ".");
+        Assert.state(updated == 1, "Failed to update run " + run.title());
     }
 
     public void delete(Integer id) {
@@ -53,7 +50,7 @@ public class JdbcClientRunRepository {
                 .param("id", id)
                 .update();
 
-        Assert.state(updated == 1, "Failed to delete run " + id + ".");
+        Assert.state(updated == 1, "Failed to delete run " + id);
     }
 
     public int count() { return jdbcClient.sql("SELECT * FROM run").query().listOfRows().size(); }
